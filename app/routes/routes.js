@@ -6,4 +6,7 @@ router.get('/', (req, res) => {
 router.get('/register', (req, res) => {
     res.render('register');
 });
+router.get('/users/login', (req, res) => {
+    res.render('login');
+});
 module.exports = router; // export pointer on router
