@@ -9,4 +9,8 @@ router.get('/register', (req, res) => {
 router.get('/users/login', (req, res) => {
     res.render('login');
 });
+router.post('/register', (req, res) => {
+    console.log(req.body);
+    res.send('hello');
+});
 module.exports = router; // export pointer on router
