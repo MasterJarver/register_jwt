@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const User = require('../models/User');
+const bcrypt = require('bcryptjs');
 router.get('/', (req, res) => {
     res.render('welcome');
 });
@@ -27,7 +29,20 @@ router.post('/register', (req, res) => {
         res.render('register', {errors, name, email, password, password2});
     }
     else {
-        res.send('pass');
+        // Validation passed
+        User.findOne({email: email})
+            .then(user => {
+                if(user) {
+                    // user exists
+                    error.push({msg: 'Email is already registered'});
+                    res.render('register', {errors, name, email, password, password2});
+                }
+                else {
+                    const newUser = new User({name, email, password});
+                    console.log(newUser);
+                    res.send('hello');
+                }
+            });
     }
 });
 module.exports = router; // export pointer on router
