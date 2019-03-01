@@ -41,10 +41,30 @@ router.post('/register', (req, res) => {
                 else {
                     console.log('create new user');
                     const newUser = new User({name, email, password});
-                    newUser.save((err, user) => {
-                        if(err) console.log(err);
-                        else console.log('user saved', user);
+                    // hash password
+                    bcrypt.genSalt(10, (err, salt) => {
+                        bcrypt.hash(newUser.password, salt, (err, hash) => {
+                            if(err) throw err;
+                            // Set password to hashed
+                            newUser.password = hash;
+                            console.log('hash was created');
+                            // newUser.save()
+                            //     .then(user => {
+                            //         console.log(user);
+                            //         res.redirect('/login')
+                            //     })
+                            //     .catch(err => console.log(err));
+                        });
                     });
+                    // newUser.save()
+                    //     .then(user => {
+                    //         console.log(user);
+                    //         res.redirect('/login')
+                    //     })
+                    //     .catch(err => console.log(err));
+                    newUser.save()
+                        .then(console.log('user saved', user))
+                        .catch(err => console.log(err));
                     console.log('this is new user: \n' + newUser);
                     res.send('hello');
                 }
