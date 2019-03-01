@@ -63,10 +63,12 @@ router.post('/register', (req, res) => {
                     //     })
                     //     .catch(err => console.log(err));
                     newUser.save()
-                        .then(console.log('user saved', user))
+                        .then((user) => {
+                            console.log('user saved', user);
+                            res.redirect('/users/login');
+                        })
                         .catch(err => console.log(err));
                     console.log('this is new user: \n' + newUser);
-                    res.send('hello');
                 }
             })
             .catch(err => console.log(err));
