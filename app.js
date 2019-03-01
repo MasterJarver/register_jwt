@@ -6,9 +6,8 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 // DB Config
 const db = require('./config/keys').MongoURI;
-const dbName = 'register_db';
 // Connect to Mongo
-mongoose.connect(`${db}${dbName}`, {useNewUrlParser: true})
+mongoose.connect(db, {useNewUrlParser: true})
     .then(() => console.log('MongoDB Connected...'))
     .catch(err => console.log(err));
 // EJS

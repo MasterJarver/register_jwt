@@ -34,15 +34,22 @@ router.post('/register', (req, res) => {
             .then(user => {
                 if(user) {
                     // user exists
-                    error.push({msg: 'Email is already registered'});
+                    console.log('user already exist');
+                    errors.push({msg: 'Email is already registered'});
                     res.render('register', {errors, name, email, password, password2});
                 }
                 else {
+                    console.log('create new user');
                     const newUser = new User({name, email, password});
-                    console.log(newUser);
+                    newUser.save((err, user) => {
+                        if(err) console.log(err);
+                        else console.log('user saved', user);
+                    });
+                    console.log('this is new user: \n' + newUser);
                     res.send('hello');
                 }
-            });
+            })
+            .catch(err => console.log(err));
     }
 });
 module.exports = router; // export pointer on router
