@@ -48,20 +48,8 @@ router.post('/register', (req, res) => {
                             // Set password to hashed
                             newUser.password = hash;
                             console.log('hash was created');
-                            // newUser.save()
-                            //     .then(user => {
-                            //         console.log(user);
-                            //         res.redirect('/login')
-                            //     })
-                            //     .catch(err => console.log(err));
                         });
                     });
-                    // newUser.save()
-                    //     .then(user => {
-                    //         console.log(user);
-                    //         res.redirect('/login')
-                    //     })
-                    //     .catch(err => console.log(err));
                     newUser.save()
                         .then((user) => {
                             console.log('user saved', user);
