@@ -3,9 +3,12 @@ const router = express.Router();
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
+// Welcome page
 router.get('/', (req, res) => {
     res.render('welcome');
 });
+// Dashboard
+router.get('/dashboard', (req, res) => res.render('dashboard'));
 router.get('/register', (req, res) => {
     res.render('register');
 });
@@ -48,28 +51,40 @@ router.post('/register', (req, res) => {
                             if(err) throw err;
                             // Set password to hashed
                             newUser.password = hash;
+                            console.log(`hash is ${hash}`);
+                            console.log(`new user password is ${newUser.password}`);
                             console.log('hash was created');
                         });
                     });
-                    newUser.save()
-                        .then((user) => {
-                            console.log('user saved', user);
-                            req.flash('success_msg', 'You are now registered and can log in');
-                            res.redirect('/users/login');
-                        })
-                        .catch(err => console.log(err));
-                    console.log('this is new user: \n' + newUser);
+                    setTimeout(() => {
+                        newUser.save()
+                            .then((user) => {
+                                console.log('prepare to save user');
+                                console.log('user saved', user);
+                                req.flash('success_msg', 'You are now registered and can log in');
+                                res.redirect('/users/login');
+                            })
+                            .catch(err => console.log(err));
+                        console.log('this is new user: \n' + newUser);
+                    }, 100);
                 }
             })
             .catch(err => console.log(err));
     }
 });
 // Login handle
-router.post('/login', (req, res) => {
+router.post('/login', (req, res, next) => {
     passport.authenticate('local', {
         successRedirect: '/dashboard',
-        failureRedirect: '/user/login',
+        failureRedirect: '/users/login',
         failureFlash: true
     })(req, res, next);
+});
+// Logout Handle
+router.get('/logout', (req, res) => {
+    req.logout();
+    req.flash('success_msg', 'You are logged out');
+    res.redirect('/users/login');
+
 });
 module.exports = router; // export pointer on router
