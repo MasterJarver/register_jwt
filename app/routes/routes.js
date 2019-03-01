@@ -3,12 +3,13 @@ const router = express.Router();
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
+const {ensureAuthenticated} = require('../../config/auth');
 // Welcome page
 router.get('/', (req, res) => {
     res.render('welcome');
 });
 // Dashboard
-router.get('/dashboard', (req, res) => res.render('dashboard'));
+router.get('/dashboard', ensureAuthenticated, (req, res) => res.render('dashboard', {name: req.user.name}));
 router.get('/register', (req, res) => {
     res.render('register');
 });
