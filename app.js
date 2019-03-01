@@ -5,7 +5,10 @@ const flash = require('connect-flash');
 const session = require('express-session');
 const process = require('process');
 const PORT = process.env.PORT || 3000;
+const passport = require('passport');
 const app = express();
+// Passport config
+require('./config/passport')(passport);
 // DB Config
 const db = require('./config/keys').MongoURI;
 // Connect to Mongo
@@ -23,6 +26,9 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }));
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
 // Connect Flash
 app.use(flash());
 // Global Vars

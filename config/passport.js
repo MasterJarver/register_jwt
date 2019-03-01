@@ -2,11 +2,13 @@ const LocalStrategy = require('passport-local').Strategy;
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 // Load User Model
-const user = require('/app/models/User');
+
+const User = require('../app/models/User');
+console.log('throw throw');
 module.exports = (passport) => {
     passport.use(new LocalStrategy({usernameField: 'email'}, (email, password, done) => {
         // Match User
-        user.findOne({email: email})
+        User.findOne({email: email})
             .then(user => {
                 if(!user) {
                     return done(null, false, {message: 'That email is not register'});
@@ -18,7 +20,7 @@ module.exports = (passport) => {
                         return done(null, user);
                     }
                     else {
-                        return dome(null, false, {message: 'Password incorrect'})
+                        return done(null, false, {message: 'Password incorrect'})
                     }
                 });
             })
@@ -28,7 +30,7 @@ module.exports = (passport) => {
         done(null, user.id);
     });
     passport.deserializeUser((id, done) => {
-        user.findById(id, (err, user) => {
+        User.findById(id, (err, user) => {
             done(err, user)
         });
     });
